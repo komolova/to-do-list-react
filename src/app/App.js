@@ -1,14 +1,16 @@
 import React from 'react';
 
-import './normalize.css';
+import './Normalize.css';
 import './App.css';
 
-import Header from './Header';
+import Header from './../components/Header';
+import AddToDoForm from './../components/AddToDoForm';
 
 export default function App() {
   return (
     <div className="App">
       <Header />
+      <AddToDoForm />
     </div>
   );
 }
