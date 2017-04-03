@@ -4,13 +4,15 @@ import './Button.css';
 export default function Button(props) {
   const {
     children,
-    type
+    type,
+    className,
+    onClick
   } = props;
 
- const buttonClassName = [`bnt--type${type}`, 'btn'];
+ const buttonClassName = `${className} btn`;
 
   return (
-    <button type={ type } className={ buttonClassName }>
+    <button type={ type } className={ buttonClassName } onClick={ onClick }>
       { children }
     </button>
   );

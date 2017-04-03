@@ -1,26 +1,25 @@
-.Form-wrapper {
-  max-width: 600px;
+.form-wrapper {
+  position: relative;
+  max-width: 700px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 
-.Form {
-  position: relative;
+.form {
+  display: flex;
 }
 
 .input-text {
-  width: 493px;
-  padding: 10px;
+  width: 70%;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid rgba(0, 0, 0, .2);
 }
 
-input[type=submit] {
-  background-color: rgba(0,0,0,0.1);
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: none;
-  border: 1px solid rgba(0,0,0,0.3);
-}
-
-input[type=checkbox] {
-  margin-left: -20px;
-  margin-right: 8px;
+.add-btn {
+  background: rgba(0, 0, 0, .1);
+  height: 40px;
+  max-width: 30%;
+  width: 120px;
+  margin-left: 20px;
 }

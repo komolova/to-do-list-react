@@ -1,19 +1,28 @@
-import React, { Component } from 'react';
+import React, { PropTypes } from 'react';
 import './AddToDoForm.css';
 
 import Button from './Button';
 
-class AddToDoForm extends Component {
-  render() {
-    return(
-      <div className="Form-wrapper">
-        <form autocomplete="off" className="Form">
-          <input className="input-text" type="text" name="message" placeholder="What you need to do?" />
-          <Button type="submit">Add to list</Button>
-        </form>
-      </div>
-    )
-  }
+export default function AddToDoForm(props) {
+  const { onSubmit, onChange, value } = props;
+
+  return(
+    <div className="form-wrapper" onSubmit={ onSubmit }>
+      <form autoComplete="off" className="form">
+        <input className="input-text"
+               type="text"
+               placeholder="What you need to do?"
+               onChange={ onChange }
+               value={ value }
+               />
+        <Button type="submit" className="add-btn">Add to list!</Button>
+      </form>
+    </div>
+  );
 }
 
-export default AddToDoForm;
+AddToDoForm.propTypes = {
+  onSubmit: PropTypes.func,
+  onChange: PropTypes.func,
+  value: PropTypes.string
+}
