@@ -16,7 +16,7 @@ export default class App extends React.Component {
 
   onChange = (e) => {
     this.setState({
-      text: e.target.value.trim()
+      text: e.target.value
     })
   }
 
@@ -30,26 +30,23 @@ export default class App extends React.Component {
     e.preventDefault();
     const { text } = this.state;
     const newItem = {
-      text: this.state.text,
+      text: this.state.text.trim(),
       done: false,
       id: this.generateId()
     };
 
     if(text) {
-      this.state.items.push(newItem);
       this.setState({
-        items: this.state.items,
+        items: [...this.state.items, newItem],
         text: ''
       })
     }
   }
 
   removeToDo = (id) => {
-    const items = this.state.items.filter((item) => {
-      return (item.id !== id) ? item : false;
+    this.setState({
+      item: this.state.items.filter(item => item.id !== id)
     });
-
-    this.setState({items: items});
   }
 
   render() {

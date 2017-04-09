@@ -1,11 +1,13 @@
-.to-do-item {
+.to-do {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   color: black;
   margin-bottom: 20px;
 }
 
 .item-text {
+  width: 100%;
   margin-left: 10px;
 }
 

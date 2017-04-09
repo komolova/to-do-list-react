@@ -1,11 +1,10 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import { PropTypes } from 'prop-types';
 import './AddToDoForm.css';
 
 import Button from './Button';
 
-export default function AddToDoForm(props) {
-  const { onSubmit, onChange, value } = props;
-
+export default function AddToDoForm( { onSubmit, onChange, value }) {
   return(
     <div className="form-wrapper" onSubmit={ onSubmit }>
       <form autoComplete="off" className="form">

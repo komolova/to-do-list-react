@@ -10,7 +10,7 @@
 }
 
 .input-text {
-  width: 70%;
+  width: 100%;
   height: 40px;
   padding: 0 10px;
   border: 1px solid rgba(0, 0, 0, .2);
@@ -19,7 +19,6 @@
 .add-btn {
   background: rgba(0, 0, 0, .1);
   height: 40px;
-  max-width: 30%;
-  width: 120px;
+  width: 200px;
   margin-left: 20px;
 }

@@ -3,13 +3,9 @@ import './ToDoItem.css';
 
 import Button from './Button';
 
-export default function ToDoItem(props) {
-  const { itemText,
-    itemId,
-    removeToDo } = props;
-
+export default function ToDoItem({ itemId, itemText, removeToDo }) {
   return (
-    <li className="to-do-item" key={ itemId }>
+    <div className="to-do">
       <input type="checkbox" />
       <div className="item-text">{ itemText }</div>
       <Button type="reset"
@@ -17,15 +13,14 @@ export default function ToDoItem(props) {
               onClick={ () => removeToDo(itemId) }>
         Delete
       </Button>
-    </li>
+    </div>
   );
 }
 
 ToDoItem.propTypes = {
   removeToDo: PropTypes.func.isRequired,
-  itemText: PropTypes.oneOfType([
+  item: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number
-  ]),
-  itemId: PropTypes.number
+  ])
 }
