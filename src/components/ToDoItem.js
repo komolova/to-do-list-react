@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import './ToDoItem.css';
 
 import Button from './Button';
 
-export default ToDoItem() {
+export default function ToDoItem({ itemId, itemText, removeToDo }) {
   return (
-    <div className="To-do-item-wrapper">
-      <div className="To-do-item">
-      <Button className="delete-btn"></Button>
-      <Button className="done-btn"></Button>
+    <div className="to-do">
+      <input type="checkbox" />
+      <div className="item-text">{ itemText }</div>
+      <Button type="reset"
+              className="delete-btn"
+              onClick={ () => removeToDo(itemId) }>
+        Delete
+      </Button>
     </div>
   );
+}
+
+ToDoItem.propTypes = {
+  removeToDo: PropTypes.func.isRequired,
+  item: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ])
 }
