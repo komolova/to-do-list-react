@@ -10,8 +10,15 @@ import ToDoItem from './../components/ToDoItem';
 export default class App extends React.Component {
   state = {
     text: '',
-    items: [
-    ]
+    items: []
+  }
+
+  componentDidMount() {
+    this.getTodos();
+  }
+  
+  getUrl = (path) => {
+    return `http://localhost:3001/api/v1/${path}`;
   }
 
   onChange = (e) => {
@@ -20,13 +27,14 @@ export default class App extends React.Component {
     })
   }
 
-  generateId = () => {
-    const { items } = this.state;
-    return (items && items.length === 0) ? 1 : items[items.length - 1].id + 1
-  }
-
-  getUrl = (path) => {
-    return `http://localhost:3001/api/v1/${path}`;
+  getTodos = () => {
+    fetch(this.getUrl('todos'))
+    .then((response) => response.json())
+    .then((todos) => {
+      this.setState({
+        items: [...this.state.items, ...todos]
+      })
+    })
   }
 
   addToDo = (e) => {
@@ -43,9 +51,7 @@ export default class App extends React.Component {
         }
       })
     })
-    .then((response) => {
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((todo) => {
       this.setState({
         items: [todo, ...this.state.items],
