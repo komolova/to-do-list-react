@@ -25,27 +25,38 @@ export default class App extends React.Component {
     return (items && items.length === 0) ? 1 : items[items.length - 1].id + 1
   }
 
+  getUrl = (path) => {
+    return `http://localhost:3001/api/v1/${path}`;
+  }
 
   addToDo = (e) => {
     e.preventDefault();
-    const { text } = this.state;
-    const newItem = {
-      text: this.state.text.trim(),
-      done: false,
-      id: this.generateId()
-    };
 
-    if(text) {
+    const { text } = this.state;
+
+    fetch(this.getUrl('todos'), {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        todo: {
+          name: text
+        }
+      })
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((todo) => {
       this.setState({
-        items: [...this.state.items, newItem],
+        items: [todo, ...this.state.items],
         text: ''
       })
-    }
+    })
   }
 
   removeToDo = (id) => {
     this.setState({
-      item: this.state.items.filter(item => item.id !== id)
+      items: this.state.items.filter(item => item.id !== id)
     });
   }
 
@@ -63,10 +74,9 @@ export default class App extends React.Component {
           { items.map(item => (
               <ToDoItem
                 key={ item.id }
-                itemId={ item.id }
+                item={ item.id }
+                itemText={ item.name }
                 removeToDo={ this.removeToDo }
-                itemText={ item.text }
-
               />
           ))}
         </ul>
