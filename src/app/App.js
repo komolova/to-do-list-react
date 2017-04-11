@@ -16,7 +16,7 @@ export default class App extends React.Component {
   componentDidMount() {
     this.getTodos();
   }
-  
+
   getUrl = (path) => {
     return `http://localhost:3001/api/v1/${path}`;
   }
@@ -80,8 +80,7 @@ export default class App extends React.Component {
           { items.map(item => (
               <ToDoItem
                 key={ item.id }
-                item={ item.id }
-                itemText={ item.name }
+                item={ item }
                 removeToDo={ this.removeToDo }
               />
           ))}

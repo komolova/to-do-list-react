@@ -5,14 +5,15 @@ import './ToDoItem.css';
 
 import Button from './Button';
 
-export default function ToDoItem({ itemId, itemText, removeToDo }) {
+export default function ToDoItem({ item, removeToDo }) {
   return (
     <div className="to-do">
       <input type="checkbox" />
-      <div className="item-text">{ itemText }</div>
-      <Button type="reset"
-              className="delete-btn"
-              onClick={ () => removeToDo(itemId) }>
+      <div className="item-text">{ item.name }</div>
+      <Button
+        type="reset"
+        className="delete-btn"
+        onClick={() => removeToDo(item.id)}>
         Delete
       </Button>
     </div>
@@ -21,8 +22,5 @@ export default function ToDoItem({ itemId, itemText, removeToDo }) {
 
 ToDoItem.propTypes = {
   removeToDo: PropTypes.func.isRequired,
-  item: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ])
-}
+  item: PropTypes.object,
+};
