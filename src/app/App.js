@@ -27,14 +27,24 @@ export default class App extends React.Component {
     })
   }
 
+  status = (response) => {
+    return (response.status >= 200 && response.status < 300)
+    ? Promise.resolve(response)
+    : Promise.reject(new Error(response.statusText))
+  }
+
   getTodos = () => {
     fetch(this.getUrl('todos'))
+    .then(this.status)
     .then((response) => response.json())
     .then((todos) => {
       this.setState({
         items: [...this.state.items, ...todos]
       })
     })
+    .catch((error) => {
+      console.log('Request failed', error);
+    });
   }
 
   addToDo = (e) => {
@@ -51,6 +61,7 @@ export default class App extends React.Component {
         }
       })
     })
+    .then(this.status)
     .then((response) => response.json())
     .then((todo) => {
       this.setState({
@@ -58,12 +69,23 @@ export default class App extends React.Component {
         text: ''
       })
     })
+    .catch((error) => {
+      console.log('Request failed', error);
+    });
   }
 
   removeToDo = (id) => {
-    this.setState({
-      items: this.state.items.filter(item => item.id !== id)
-    });
+    fetch(this.getUrl(`todos/${id}`), {
+      method: 'delete',
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(this.status)
+    .then((response) => response.json())
+    .then((items) => {
+      this.setState({
+        items: this.state.items.filter(item => item.id !== id)
+      });
+    })
   }
 
   render() {
