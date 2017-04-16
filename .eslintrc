@@ -1,0 +1,15 @@
+{
+    "parser": "babel-eslint",
+    "extends": "airbnb",
+    "plugins": [
+        "react",
+        "jsx-a11y",
+        "import"
+    ],
+    "rules": {
+      "comma-dangle": 0,
+      "react/forbid-prop-types": 0,
+      "no-console": 0,
+      "arrow-body-style": 0
+    }
+}
