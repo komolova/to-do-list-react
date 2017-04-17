@@ -5,10 +5,12 @@ import './ToDoItem.css';
 
 import Button from './Button';
 
-export default function ToDoItem({ item, removeToDo }) {
+export default function ToDoItem({ item, removeToDo, updateTodo }) {
   return (
-    <div className="to-do">
-      <input type="checkbox" />
+    <div className="todo">
+      <input
+        type="checkbox"
+        onChange={() => updateTodo(item.id)} />
       <div className="item-text">{ item.name }</div>
       <Button
         type="reset"
@@ -20,7 +22,12 @@ export default function ToDoItem({ item, removeToDo }) {
   );
 }
 
+ToDoItem.defaultProps = {
+  item: {}
+};
+
 ToDoItem.propTypes = {
   removeToDo: PropTypes.func.isRequired,
-  item: PropTypes.object,
+  updateTodo: PropTypes.func.isRequired,
+  item: PropTypes.object
 };
