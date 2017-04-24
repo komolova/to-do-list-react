@@ -4,72 +4,30 @@ import fetch from 'isomorphic-fetch';
 import './Normalize.css';
 import './App.css';
 
+import * as Client from './../client';
+
 import Header from './../components/Header';
 import AddToDoForm from './../components/AddToDoForm';
 import ToDoItem from './../components/ToDoItem';
 
 export default class App extends React.Component {
   state = {
-    text: '',
     items: []
   }
 
   componentDidMount() {
-    this.getTodos();
-  }
-
-  onChange = (e) => {
-    this.setState({
-      text: e.target.value
-    });
-  }
-
-  getUrl = path => `http://localhost:3001/api/v1/${path}`
-
-  getTodos = () => {
-    fetch(this.getUrl('todos'))
-    .then(this.getStatus)
-    .then(response => response.json())
+    Client.getTodos()
     .then((todos) => {
       this.setState({
         items: [...this.state.items, ...todos]
       });
     })
-    .catch((error) => {
-      console.log(error);
-    });
+    .catch(error => error);
   }
 
-  getStatus = (response) => {
-    return (response.status >= 200 && response.status < 300)
-    ? Promise.resolve(response)
-    : Promise.reject(new Error(response.statusText));
-  }
-
-  addToDo = (e) => {
-    e.preventDefault();
-
-    const { text } = this.state;
-
-    fetch(this.getUrl('todos'), {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        todo: {
-          name: text
-        }
-      })
-    })
-    .then(this.getStatus)
-    .then(response => response.json())
-    .then((todo) => {
-      this.setState({
-        items: [todo, ...this.state.items],
-        text: ''
-      });
-    })
-    .catch((error) => {
-      console.log(error);
+  onSubmitForm = (todo) => {
+    this.setState({
+      items: [todo, ...this.state.items],
     });
   }
 
@@ -115,24 +73,23 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { items, text } = this.state;
+    const { items } = this.state;
 
     return (
       <div className="app">
         <Header />
         <AddToDoForm
-          onChange={this.onChange}
-          onSubmit={this.addToDo}
-          value={text} />
+          onSubmit={ this.onSubmitForm }
+        />
 
         <ul className="list-items">
           { items.map(item => (
             <ToDoItem
-              key={item.id}
-              item={item}
-              updateTodo={this.updateTodo}
-              removeToDo={this.removeToDo}
-              />
+              key={ item.id }
+              item={ item }
+              updateTodo={ this.updateTodo }
+              removeToDo={ this.removeToDo }
+            />
           ))}
         </ul>
 
