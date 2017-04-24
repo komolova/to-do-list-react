@@ -1,27 +1,82 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import './AddToDoForm.css';
+import * as Client from '../client';
 
 import Button from './Button';
+import './AddToDoForm.css';
 
-export default function AddToDoForm( { onSubmit, onChange, value }) {
-  return(
-    <div className="form-wrapper" onSubmit={ onSubmit }>
-      <form autoComplete="off" className="form">
-        <input className="input-text"
-               type="text"
-               placeholder="What you need to do?"
-               onChange={ onChange }
-               value={ value }
-               />
-        <Button type="submit" className="add-btn">Add to list!</Button>
-      </form>
-    </div>
-  );
-}
+export default class AddToDoForm extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired
+  }
 
-AddToDoForm.propTypes = {
-  onSubmit: PropTypes.func,
-  onChange: PropTypes.func,
-  value: PropTypes.string
+  state = {
+    text: '',
+    disabled: false,
+    errors: []
+  }
+
+  onChange = (e) => {
+    this.setState({
+      text: e.target.value
+    });
+  }
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    const { text } = this.state;
+
+    this.setState({
+      disabled: true
+    });
+    Client.addTodo(text)
+    .then((todo) => {
+      this.props.onSubmit(todo);
+    })
+    .then(() => {
+      this.setState({
+        text: '',
+        disabled: false,
+        errors: []
+      });
+    })
+    .catch((response) => {
+      response.json().then((error) => {
+        this.setState({
+          errors: [...this.state.errors, error.errors.name]
+        });
+      });
+      this.setState({
+        disabled: false
+      });
+    });
+  }
+
+  render() {
+    const { disabled, errors } = this.state;
+
+    return (
+      <div className="form-wrapper">
+        <form autoComplete="off" className="form" onSubmit={ this.onSubmit }>
+          <input
+            className="input-text"
+            type="text"
+            placeholder="What you need to do?"
+            onChange={ this.onChange }
+            value={ this.state.text }
+          />
+          <Button
+            type="submit"
+            disabled={ disabled }
+            className="add-btn"
+          >
+          Add to list!
+          </Button>
+        </form>
+        { errors.length > 0 &&
+          <div className="form-error">{ errors }</div>
+        }
+      </div>
+    );
+  }
 }
