@@ -1,10 +1,9 @@
 import React from 'react';
-import fetch from 'isomorphic-fetch';
 
 import './Normalize.css';
 import './App.css';
 
-import * as Client from './../client';
+import { getTodos } from './../api';
 
 import Header from './../components/Header';
 import AddToDoForm from './../components/AddToDoForm';
@@ -16,13 +15,15 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    Client.getTodos()
+    getTodos()
     .then((todos) => {
       this.setState({
         items: [...this.state.items, ...todos]
       });
     })
-    .catch(error => error);
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
   onSubmitForm = (todo) => {
@@ -31,44 +32,9 @@ export default class App extends React.Component {
     });
   }
 
-  removeToDo = (id) => {
-    fetch(this.getUrl(`todos/${id}`), {
-      method: 'delete',
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .then(this.getStatus)
-    .then(response => response.json())
-    .then(() => {
-      this.setState({
-        items: this.state.items.filter(item => item.id !== id)
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
-
-  updateTodo = (id) => {
-    const { done } = this.state;
-
-    fetch(this.getUrl(`todos/${id}`), {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        todo: {
-          done: !done
-        }
-      })
-    })
-    .then(this.getStatus)
-    .then(response => response.json())
-    .then(() => {
-      this.setState({
-        done: !done
-      });
-    })
-    .catch((error) => {
-      console.log(error);
+  onRemoveTodo = (id) => {
+    this.setState({
+      items: this.state.items.filter(item => item.id !== id)
     });
   }
 
@@ -87,8 +53,7 @@ export default class App extends React.Component {
             <ToDoItem
               key={ item.id }
               item={ item }
-              updateTodo={ this.updateTodo }
-              removeToDo={ this.removeToDo }
+              onRemoveTodo={ this.onRemoveTodo }
             />
           ))}
         </ul>

@@ -2,15 +2,18 @@ import fetch from 'isomorphic-fetch';
 
 const getUrl = path => `http://localhost:3001/api/v1/${path}`;
 
-const getStatus = response => (response.status >= 200 && response.status < 300)
-  ? Promise.resolve(response)
-  : Promise.reject(response);
+const getStatus = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return Promise.resolve(response);
+  }
+  return Promise.reject(response);
+};
 
-const getTodos = () => fetch(getUrl('todos'))
+export const getTodos = () => fetch(getUrl('todos'))
 .then(getStatus)
 .then(response => response.json());
 
-const addTodo = text => fetch(getUrl('todos'), {
+export const addTodo = text => fetch(getUrl('todos'), {
   method: 'post',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -22,14 +25,14 @@ const addTodo = text => fetch(getUrl('todos'), {
 .then(getStatus)
 .then(response => response.json());
 
-const removeToDo = id => fetch(this.getUrl(`todos/${id}`), {
-  method: 'delete',
+export const removeTodo = id => fetch(getUrl(`todos/${id}`), {
+  method: 'DELETE',
   headers: { 'Content-Type': 'application/json' }
 })
-.then(this.getStatus)
+.then(getStatus)
 .then(response => response.json());
 
-const updateTodo = (id, isDone) => fetch(this.getUrl(`todos/${id}`), {
+export const updateTodo = (id, isDone) => fetch(getUrl(`todos/${id}`), {
   method: 'PATCH',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -38,12 +41,5 @@ const updateTodo = (id, isDone) => fetch(this.getUrl(`todos/${id}`), {
     }
   })
 })
-.then(this.getStatus)
+.then(getStatus)
 .then(response => response.json());
-
-export {
-  getTodos,
-  addTodo,
-  removeToDo,
-  updateTodo
-};
