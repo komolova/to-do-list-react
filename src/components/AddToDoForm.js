@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { addTodo } from '../api';
+import { addTodo } from '../API/API';
 
 import Button from './Button';
 import './AddToDoForm.css';
@@ -31,32 +31,32 @@ export default class AddToDoForm extends Component {
     });
 
     addTodo(text)
-    .then((todo) => {
-      this.props.onSubmit(todo);
-    })
-    .then(() => {
-      this.setState({
-        text: '',
-        disabled: false,
-        errors: []
-      });
-    })
-    .catch((response) => {
-      if (response.headers.get('Content-Type').match(/application\/json/)) {
-        response.json().then((error) => {
-          this.setState({
-            errors: [...this.state.errors, error.errors.name]
-          });
-        });
-      } else {
+      .then((todo) => {
+        this.props.onSubmit(todo);
+      })
+      .then(() => {
         this.setState({
-          errors: ['Error']
+          text: '',
+          disabled: false,
+          errors: []
         });
-      }
-      this.setState({
-        disabled: false
+      })
+      .catch((response) => {
+        if (response.headers.get('Content-Type').match(/application\/json/)) {
+          response.json().then((error) => {
+            this.setState({
+              errors: [...this.state.errors, error.errors.name]
+            });
+          });
+        } else {
+          this.setState({
+            errors: ['Error']
+          });
+        }
+        this.setState({
+          disabled: false
+        });
       });
-    });
   }
 
   render() {
