@@ -3,7 +3,7 @@ import React from 'react';
 import './Normalize.css';
 import './App.css';
 
-import { getTodos } from './../api';
+import { getTodos, removeTodo, updateTodo } from '../API/API';
 
 import Header from './../components/Header';
 import AddToDoForm from './../components/AddToDoForm';
@@ -16,26 +16,43 @@ export default class App extends React.Component {
 
   componentDidMount() {
     getTodos()
-    .then((todos) => {
-      this.setState({
-        items: [...this.state.items, ...todos]
+      .then((todos) => {
+        this.setState({
+          items: [...this.state.items, ...todos]
+        });
+      })
+      .catch((error) => {
+        console.error(error);
       });
-    })
-    .catch((error) => {
-      console.error(error);
-    });
   }
 
   onSubmitForm = (todo) => {
     this.setState({
-      items: [todo, ...this.state.items],
+      items: [todo, ...this.state.items]
     });
   }
 
   onRemoveTodo = (id) => {
-    this.setState({
-      items: this.state.items.filter(item => item.id !== id)
-    });
+    removeTodo(id)
+      .then(() => {
+        this.setState({
+          items: this.state.items.filter(item => item.id !== id)
+        });
+      });
+  }
+
+  toggleTodo = (todoId, done) => {
+    updateTodo(todoId, done)
+      .then(() => {
+        this.setState({
+          items: this.state.items.map((item) => {
+            if (item.id === todoId) {
+              return { ...item, done };
+            }
+            return item;
+          })
+        });
+      });
   }
 
   render() {
@@ -51,9 +68,10 @@ export default class App extends React.Component {
         <ul className="list-items">
           { items.map(item => (
             <ToDoItem
+              toggleTodo={ this.toggleTodo }
               key={ item.id }
               item={ item }
-              onRemoveTodo={ this.onRemoveTodo }
+              removeTodo={ this.onRemoveTodo }
             />
           ))}
         </ul>
