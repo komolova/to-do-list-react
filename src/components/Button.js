@@ -8,13 +8,19 @@ export default function Button(props) {
     children,
     type,
     className,
-    onClick
+    onClick,
+    disabled
   } = props;
 
- const buttonClassName = `${className} btn`;
+  const buttonClassName = `${className} btn`;
 
   return (
-    <button type={ type } className={ buttonClassName } onClick={ onClick }>
+    <button
+      type={ type }
+      disabled={ disabled }
+      className={ buttonClassName }
+      onClick={ onClick }
+    >
       { children }
     </button>
   );
@@ -23,6 +29,7 @@ export default function Button(props) {
 Button.propTypes = {
   children: PropTypes.string,
   type: PropTypes.string,
+  disabled: PropTypes.bool,
   className: PropTypes.string,
   onClick: PropTypes.func
-}
+};
