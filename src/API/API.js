@@ -3,7 +3,7 @@ import fetch from 'isomorphic-fetch';
 const getUrl = path => `http://localhost:3001/api/v1/${path}`;
 
 const getStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.ok) {
     return Promise.resolve(response);
   }
   return Promise.reject(response);
