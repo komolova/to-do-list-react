@@ -54,7 +54,9 @@ export default class AddToDoForm extends Component {
           });
         }
         this.setState({
-          disabled: false
+          disabled: false,
+          errors: [],
+          text: ''
         });
       });
   }
