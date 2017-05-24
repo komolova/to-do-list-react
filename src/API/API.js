@@ -25,6 +25,13 @@ export const addTodo = text => fetch(getUrl('todos'), {
 .then(getStatus)
 .then(response => response.json());
 
+export const getErrors = (response) => {
+  if (response.headers.get('Content-Type').match(/application\/json/)) {
+    return response.json().then(error => error.errors.name);
+  }
+  return Promise.resolve(['Error']);
+};
+
 export const removeTodo = id => fetch(getUrl(`todos/${id}`), {
   method: 'DELETE',
   headers: { 'Content-Type': 'application/json' }
