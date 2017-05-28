@@ -22,7 +22,7 @@ export default class ToDoItem extends Component {
     const { item } = this.props;
 
     return (
-      <div className="todo">
+      <li className="todo">
         <input
           checked={ item.done }
           type="checkbox"
@@ -36,7 +36,7 @@ export default class ToDoItem extends Component {
         >
           Delete
         </Button>
-      </div>
+      </li>
     );
   }
 }
