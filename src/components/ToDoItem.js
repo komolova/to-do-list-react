@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { removeTodo } from './../api';
 
 import './ToDoItem.css';
 
@@ -8,20 +7,24 @@ import Button from './Button';
 
 export default class ToDoItem extends Component {
   onClick = () => {
-    const { id } = this.props.item;
-    const { onRemoveTodo } = this.props;
+    const { item, removeTodo } = this.props;
 
-    removeTodo(id).then(() => {
-      onRemoveTodo(id);
-    });
+    removeTodo(item.id);
+  }
+
+  onChange = () => {
+    const { item, toggleTodo } = this.props;
+
+    toggleTodo(item.id, !item.done);
   }
 
   render() {
     const { item } = this.props;
 
     return (
-      <div className="todo">
+      <li className="todo">
         <input
+          checked={ item.done }
           type="checkbox"
           onChange={ this.onChange }
         />
@@ -33,7 +36,7 @@ export default class ToDoItem extends Component {
         >
           Delete
         </Button>
-      </div>
+      </li>
     );
   }
 }
@@ -43,6 +46,7 @@ ToDoItem.defaultProps = {
 };
 
 ToDoItem.propTypes = {
-  onRemoveTodo: PropTypes.func.isRequired,
+  removeTodo: PropTypes.func.isRequired,
+  toggleTodo: PropTypes.func.isRequired,
   item: PropTypes.object
 };
