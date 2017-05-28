@@ -26,7 +26,7 @@ export default class ToDoItem extends Component {
         <input
           checked={ item.done }
           type="checkbox"
-          onChange={ e => this.onChange(e, item.done) }
+          onChange={ this.onChange }
         />
         <div className="item-text">{ item.name }</div>
         <Button
